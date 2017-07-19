@@ -210,9 +210,9 @@
 <li>message : 由Key,value 组成,是kafka上最基本的数据单位</li>
 <li>broker     : Kafka集群中的机器/服务被称为broker， 是一个物理概念</li>
 <li>topic    : 维护Kafka上的消息类型被称为Topic,类似一个消息队列，是一个逻辑概念  </li>
-<li>partition : 具体维护Kafka上的消息数据的最小单位</li>
+<li>partition : 具体维护Kafka上的消息数据的最小单位<br><img src="/picture/topic_partition.png" alt="topic_partition"> </li>
 <li>producer :负责将消息发送到Kafka对应Topic的进程</li>
-<li>consumer : 负责从对应Topic获取数据的进程</li>
+<li>consumer : 负责从对应Topic获取数据的进程<br><img src="/picture/partiton_consumer.png" alt="partiton_consumer"> </li>
 <li>consumer group : 每个consumer 都对应唯一一个consumer group,n:1关系</li>
 </ul>
 <h3 id="kafka-机群搭建"><a href="#kafka-机群搭建" class="headerlink" title="kafka 机群搭建"></a>kafka 机群搭建</h3><p>kafka集群搭建比较简单,参见<a href="http://kafka.apache.org/" title="kafka" target="_blank" rel="external">kafka</a>,不再赘述;<br>kafka 集群配置,参见<a href="http://kafka.apache.org/documentation/" title="kafka config" target="_blank" rel="external">kafka config</a>,也不再赘述了</p>

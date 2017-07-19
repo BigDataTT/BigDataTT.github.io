@@ -216,7 +216,7 @@
 <li>利用ISR机制,如果 ISR 中的大于一个节点或者,则随机从ISR中选择; 如果ISR中的节点都failed,则等待ISR中的任何一个节点恢复并担任leader 或者 选择所有节点中（不只是ISR）第一个恢复的节点作为leader。</li>
 </ul>
 </li>
-<li><p>ISR 与 HW<br>CAP理论是指，分布式系统中，一致性、可用性和分区容忍性最多只能同时满足两个。kafka 使用ISR 和HW 保证可用性和一致性之间的平衡;<br>  ISR 是指 kafka动态维护了一个同步状态的副本的集合(a set of in-sync replicas);ISR在ZooKeeper中维护.<br>  HW 是指high watermark，最后 commit 的 offset;<br>  <img src="/picture/isr_hw.png" alt="kafkalogfile"></p>
+<li><p>ISR 与 HW<br>CAP理论是指，分布式系统中，一致性、可用性和分区容忍性最多只能同时满足两个。kafka 使用ISR 和HW 保证可用性和一致性之间的平衡;<br>  ISR 是指 kafka动态维护了一个同步状态的副本的集合(a set of in-sync replicas);ISR在ZooKeeper中维护.<br>  HW 是指high watermark，最后 commit 的 offset;<br>  <img src="/picture/isr_hw1.png" alt="kafkalogfile"></p>
 </li>
 <li><p>controller<br>  Kafka集群中的其中一个Broker会被选举为Controller，主要负责Partition管理和副本状态管理，也会执行类似于重分配Partition之类的管理任务。如果当前的Controller失败，会从其他正常的Broker中重新选举Controller</p>
 </li>
@@ -235,8 +235,8 @@
         </div>
         <nav class="pagination" role="pagination">
     
-    <a class="pull-left" href="/2017/07/18/kafka消费者/" style="float: left;">
-        ← kafka Consumer
+    <a class="pull-left" href="/2017/07/18/kafka比较/" style="float: left;">
+        ← kafka的使用场景
     </a>
     
     
