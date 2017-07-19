@@ -284,7 +284,7 @@ kafka的使用场景
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
-                    <h3><a href="/2017/07/18/kafka消费者/">kafka Producer</a></h3>
+                    <h3><a href="/2017/07/18/kafka生产者/">kafka Producer</a></h3>
                     <span>
                         <span class="post-meta">
       <time datetime="2017-07-17T18:10:06.000Z" itemprop="datePublished">
@@ -298,20 +298,21 @@ kafka的使用场景
                     <p>
                       
                         
-kafka 简介
-kafka 特性
-kafka 集群
-kafka producer
-kafka consumer
+producer写消息机制
+producer相关配置
+命令行执行
+demo
 
-kafka 简介Kafka是最初由Linkedin公司开发，是一个分布式、分区的、多副本的、多订阅者，基于zookeeper协调的分布式日志系统(也可以当做MQ系统)，常见可以用于web/nginx日志、访问日志，消息服务等等，Linkedin于2010年贡献给了Apache基金会并成为顶级开源项目。
-kafka 特性
-
+producerkafka producer 有sync和async两种发送方式, 具体如下
+producer相关配置参见producer config
+命令行执行bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
+demo&emsp;mvn依赖
+&lt;depend
                       
                     </p>
                     
                     <p class="pull-right readMore">
-                        <a href="/2017/07/18/kafka消费者/">Read More...</a>
+                        <a href="/2017/07/18/kafka生产者/">Read More...</a>
                     </p>
                     
                 </div>
@@ -323,7 +324,7 @@ kafka 特性
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
-                    <h3><a href="/2017/07/18/kafka生产者/">kafka生产者</a></h3>
+                    <h3><a href="/2017/07/18/kafka消费者/">kafka Consumer</a></h3>
                     <span>
                         <span class="post-meta">
       <time datetime="2017-07-17T18:10:06.000Z" itemprop="datePublished">
@@ -337,20 +338,20 @@ kafka 特性
                     <p>
                       
                         
-kafka 简介
-kafka 特性
-kafka 集群
-kafka producer
-kafka consumer
+producer写消息机制
+producer相关配置
+命令行执行
+demo
 
-kafka 简介Kafka是最初由Linkedin公司开发，是一个分布式、分区的、多副本的、多订阅者，基于zookeeper协调的分布式日志系统(也可以当做MQ系统)，常见可以用于web/nginx日志、访问日志，消息服务等等，Linkedin于2010年贡献给了Apache基金会并成为顶级开源项目。
-kafka 特性
-
+producerkafka producer 有sync和async两种发送方式, 具体如下
+producer相关配置参见[producer config][2]
+命令行执行bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
+demo
                       
                     </p>
                     
                     <p class="pull-right readMore">
-                        <a href="/2017/07/18/kafka生产者/">Read More...</a>
+                        <a href="/2017/07/18/kafka消费者/">Read More...</a>
                     </p>
                     
                 </div>
