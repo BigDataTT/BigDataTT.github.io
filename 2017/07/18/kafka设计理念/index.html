@@ -186,17 +186,13 @@
       		<ul>
 <li><a href="#高吞吐量">高吞吐</a></li>
 <li><a href="#高可用">高可用</a></li>
-<li><a href="#动态扩展">动态扩展</a></li>
-<li><a href="#负载均衡">负载均衡</a></li>
-<li><a href="#持久化">持久化</a></li>
-<li><a href="#容错性">容错性</a></li>
 </ul>
 <h3 id="高吞吐量"><a href="#高吞吐量" class="headerlink" title="高吞吐量"></a>高吞吐量</h3><p> &emsp; &emsp; kafka每秒可以处理几十万条消息，它的延迟最低只有几毫秒,主要是充分利用os以下特点:</p>
 <ul>
 <li>PageCache<br>  &emsp; &emsp; kafka 利用Linux内核的Page Cache技术,只要内存足够，生产者与消费者的速度也没有差上太多，读写便都发生在Page Cache中;另外Page Cache又不需要GC,而且即使Kafka重启了，Page Cache还依然在;pageCache flush 有两种策略: 后台异步flush,主动fsync()和fdatasync();其过期机制采用LRU策略.<br> <img src="/picture/iomodle.png" alt="kafkalogfile"></li>
 </ul>
 <ul>
-<li><p>顺序写<br>&emsp; &emsp; 磁盘随机读写和顺序读写速度一般在1:5000 以下,参见<a href="http://www.cnblogs.com/yangqing/archive/2012/11/13/2767453.html" title="磁盘读写速度" target="_blank" rel="external">磁盘读写速度</a><br>&emsp; &emsp; kafka中,物理上把Topic分成一个或多个Partition，每个Partition在物理上对应一个文件夹，该文件夹下存储这个Partition的所有消息和索引文件,每个日志文件都是一个log entry序列.每个序列分成多个segment，每个segment以该segment第一条消息的offset命名并以“.kafka”为后缀。另外会有一个索引文件，它标明了每个segment下包含的log entry的offset范围<br><img src="/picture/kafkalogfile.png" alt="kafkalogfile"><br><br></p>
+<li><p>顺序写<br>&emsp; &emsp; 磁盘随机读写和顺序读写速度一般在1:5000 以下,参见<a href="http://deliveryimages.acm.org/10.1145/1570000/1563874/jacobs3.jpg" title="磁盘读写速度" target="_blank" rel="external">磁盘读写速度</a><br>&emsp; &emsp; kafka中,物理上把Topic分成一个或多个Partition，每个Partition在物理上对应一个文件夹，该文件夹下存储这个Partition的所有消息和索引文件,每个日志文件都是一个log entry序列.每个序列分成多个segment，每个segment以该segment第一条消息的offset命名并以“.kafka”为后缀。另外会有一个索引文件，它标明了每个segment下包含的log entry的offset范围<br><img src="/picture/kafkalogfile.png" alt="kafkalogfile"><br><br></p>
 </li>
 <li><p>预读策略<br>&emsp; &emsp;  Kafka里消费者太慢，堆积了几十G的内容，pageCache还是会被清理掉的。这时消费者就需要读盘了,linux 内核每次读请求会尝试预读更多的内容,内核如果发现一个进程一直使用预读数据，就会增加预读窗口的大小</p>
 </li>
@@ -204,10 +200,34 @@
 <p>  <img src="/picture/sendfile.png" alt="kafkalogfile"></p>
 </li>
 </ul>
-<h3 id="高可用"><a href="#高可用" class="headerlink" title="高可用"></a>高可用</h3><h3 id="动态扩展"><a href="#动态扩展" class="headerlink" title="动态扩展"></a>动态扩展</h3><h3 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h3><h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><h3 id="容错性"><a href="#容错性" class="headerlink" title="容错性"></a>容错性</h3><ul>
-<li>Replication机制</li>
-<li>broker 容灾机制<br>= Leader Election机制</li>
+<h3 id="高可用"><a href="#高可用" class="headerlink" title="高可用"></a>高可用</h3><ul>
+<li><p>Partition<br>&emsp; &emsp; Kafka分配partition 的算法如下：</p>
+<ul>
+<li>将所有Broker（假设共n个Broker）和待分配的Partition排序</li>
+<li>将第i个Partition分配到第（i mod n）个Broker上</li>
+<li>将第i个Partition的第j个Replica分配到第（(i + j) mod n）个Broker上</li>
+</ul>
+</li>
+<li><p>Replication<br>&emsp; &emsp; Kafka分配 data partition 的算法如下：<br>  <img src="/picture/replication.png" alt="kafkalogfile"></p>
+</li>
+<li><p>Leader Election 机制</p>
+<ul>
+<li>kafka leader 选举并没有选用ZAB算法与paxos算法</li>
+<li>利用ISR机制,如果 ISR 中的大于一个节点或者,则随机从ISR中选择; 如果ISR中的节点都failed,则等待ISR中的任何一个节点恢复并担任leader 或者 选择所有节点中（不只是ISR）第一个恢复的节点作为leader。</li>
+</ul>
+</li>
+<li><p>ISR 与 HW<br>CAP理论是指，分布式系统中，一致性、可用性和分区容忍性最多只能同时满足两个。kafka 使用ISR 和HW 保证可用性和一致性之间的平衡;<br>  ISR 是指 kafka动态维护了一个同步状态的副本的集合(a set of in-sync replicas);ISR在ZooKeeper中维护.<br>  HW 是指high watermark，最后 commit 的 offset;<br>  <img src="/picture/isr_hw.png" alt="kafkalogfile"></p>
+</li>
+<li><p>controller<br>  Kafka集群中的其中一个Broker会被选举为Controller，主要负责Partition管理和副本状态管理，也会执行类似于重分配Partition之类的管理任务。如果当前的Controller失败，会从其他正常的Broker中重新选举Controller</p>
+</li>
+<li><p>容灾机制</p>
+<ul>
+<li>Replication 机制</li>
+<li>broker failover</li>
+<li>Leader Election机制</li>
 <li>controller failover</li>
+</ul>
+</li>
 </ul>
 
             <div class="clearfix"></div>
@@ -215,8 +235,8 @@
         </div>
         <nav class="pagination" role="pagination">
     
-    <a class="pull-left" href="/2017/07/18/kafka比较/" style="float: left;">
-        ← kafka的使用场景
+    <a class="pull-left" href="/2017/07/18/kafka生产者/" style="float: left;">
+        ← kafka生产者
     </a>
     
     

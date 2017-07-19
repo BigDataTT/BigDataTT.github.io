@@ -246,6 +246,44 @@ kafka 服务端&emsp; &emsp;  kafka是典型SEDA(多阶段事务驱动模型)这
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
+                    <h3><a href="/2017/07/18/kafka比较/">kafka的使用场景</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2017-07-17T18:10:06.000Z" itemprop="datePublished">
+          2017-07-18
+      </time>
+    
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p>
+                      
+                        
+为什么要用消息系统
+消息系统比较
+kafka的使用场景
+
+为什么要用消息系统
+解耦&emsp; &emsp;在项目启动之初来预测将来项目会碰到什么需求，是极其困难的。消息系统在处理过程中间插入了一个隐含的、基于数据的接口层，两边的处理过程都要实现这一接口。这允许你独立的扩展或修改两边的处理过程，只要确保它们遵守同样的接口约束。
+
+冗余&emsp; &emsp;有些情况下，处理数据的过程会失败。除非数据被持久化，否则将造成丢失。消息队列
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2017/07/18/kafka比较/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
                     <h3><a href="/2017/07/18/kafka消费者/">kafka Producer</a></h3>
                     <span>
                         <span class="post-meta">
@@ -324,44 +362,6 @@ kafka 特性
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
-                    <h3><a href="/2017/07/18/kafka比较/">kafka的使用场景</a></h3>
-                    <span>
-                        <span class="post-meta">
-      <time datetime="2017-07-17T18:10:06.000Z" itemprop="datePublished">
-          2017-07-18
-      </time>
-    
-</span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p>
-                      
-                        
-为什么要用消息系统
-消息系统比较
-kafka的使用场景
-
-为什么要用消息系统
-解耦&emsp; &emsp;在项目启动之初来预测将来项目会碰到什么需求，是极其困难的。消息系统在处理过程中间插入了一个隐含的、基于数据的接口层，两边的处理过程都要实现这一接口。这允许你独立的扩展或修改两边的处理过程，只要确保它们遵守同样的接口约束。
-
-冗余&emsp; &emsp;有些情况下，处理数据的过程会失败。除非数据被持久化，否则将造成丢失。消息队列
-                      
-                    </p>
-                    
-                    <p class="pull-right readMore">
-                        <a href="/2017/07/18/kafka比较/">Read More...</a>
-                    </p>
-                    
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
                     <h3><a href="/2017/07/18/kafka设计理念/">kafka 设计理念</a></h3>
                     <span>
                         <span class="post-meta">
@@ -378,14 +378,10 @@ kafka的使用场景
                         
 高吞吐
 高可用
-动态扩展
-负载均衡
-持久化
-容错性
 
 高吞吐量 &emsp; &emsp; kafka每秒可以处理几十万条消息，它的延迟最低只有几毫秒,主要是充分利用os以下特点:
 
-PageCache  &emsp; &emsp; kafka 利用Linux内核的Page Cache技术,只要内存足够，生产者与消费者的速度也没有差上太多，读写便都发生在Page Cache中;另外Page Cache又不需要GC,而且即使Kafka重
+PageCache  &emsp; &emsp; kafka 利用Linux内核的Page Cache技术,只要内存足够，生产者与消费者的速度也没有差上太多，读写便都发生在Page Cache中;另外Page Cache又不需要GC,而且即使Kafka重启了，Page Cache还依然在;
                       
                     </p>
                     
