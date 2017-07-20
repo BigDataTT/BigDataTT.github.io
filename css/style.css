@@ -205,8 +205,8 @@ a.meta,
 	transition: all ease .3s;
 }
 hr {
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 /* Placeholder text color */
 input[placeholder],
@@ -3085,7 +3085,7 @@ button.send{
 * Global footer, (all pages)
 ******************************************************* */
 footer {
-	padding:5% 0 0;
+	padding:2% 0 0;
 	background:#151515;
 	z-index: 9;
 	position: relative;
