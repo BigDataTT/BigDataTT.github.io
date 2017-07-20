@@ -17,7 +17,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>kafka server | tt</title>
+  <title>kafka Consumer | tt</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -81,9 +81,23 @@
                 <a class="sb-toggle-submenu">Works<span class="sb-caret"></span></a>
                 <ul class="sb-submenu">
                     
-                        <li><a href="/" target="_BLANK" class="animsition-link">AAA</a></li>
+                        <li><a href="/tags/kafka/" target="_BLANK" class="animsition-link">kafka</a></li>
                     
-                        <li><a href="/atom.xml" target="_BLANK" class="animsition-link">BBB</a></li>
+                        <li><a href="/tags/hbase/" target="_BLANK" class="animsition-link">hbase</a></li>
+                    
+                        <li><a href="/tags/spark/" target="_BLANK" class="animsition-link">spark</a></li>
+                    
+                        <li><a href="/tags/hadoop/" target="_BLANK" class="animsition-link">hadoop</a></li>
+                    
+                        <li><a href="/tags/算法导论/" target="_BLANK" class="animsition-link">算法导论</a></li>
+                    
+                        <li><a href="/tags/机器学习/" target="_BLANK" class="animsition-link">机器学习</a></li>
+                    
+                        <li><a href="/tags/深度学习/" target="_BLANK" class="animsition-link">深度学习</a></li>
+                    
+                        <li><a href="/tags/推荐系统/" target="_BLANK" class="animsition-link">推荐系统</a></li>
+                    
+                        <li><a href="/tags/搜索/" target="_BLANK" class="animsition-link">搜索</a></li>
                     
                 </ul>
             </li>
@@ -94,9 +108,9 @@
                 <a class="sb-toggle-submenu">Links<span class="sb-caret"></span></a>
                 <ul class="sb-submenu">
                     
-                    <li><a href="http://go.kieran.top/" class="animsition-link">null</a></li>
+                    <li><a href="http://kafka.apache.org/" class="animsition-link">kafka</a></li>
                     
-                    <li><a href="http://domain.com/" class="animsition-link">Name</a></li>
+                    <li><a href="http://hbase.apache.org/" class="animsition-link">hbase</a></li>
                     
                 </ul>
             </li>
@@ -168,64 +182,48 @@
         <div class="row col-md-offset-2">
             <div class="col-md-8">
     			<span class="post-meta">
-      <time datetime="2017-07-17T19:50:24.000Z" itemprop="datePublished">
-          2017-07-18
+      <time datetime="2017-07-20T12:56:00.000Z" itemprop="datePublished">
+          2017-07-20
       </time>
     
+    
+    | 
+    <a href='/tags/大数据/'>大数据</a>,
+    
+    <a href='/tags/分布式/'>分布式</a>,
+    
+    <a href='/tags/中间件/'>中间件</a>,
+    
+    <a href='/tags/kafka/'>kafka</a>
+    
+    
 </span>
-                <h1>kafka server</h1>
+                <h1>kafka Consumer</h1>
             </div>
         </div>
         <div class="col-md-8 col-md-offset-2">
       		<ul>
-<li><a href="#kafka-服务端">kafka 服务端</a></li>
-<li><a href="#api层">api层</a></li>
-<li><a href="#日志子系统">日志子系统</a></li>
-<li><a href="#副本子系统">副本子系统</a></li>
-<li><a href="#网络层">网络层 </a></li>
+<li><a href="#producer写消息机制">producer写消息机制</a></li>
+<li><a href="#producer相关配置">producer相关配置</a></li>
+<li><a href="#kafka-集群">命令行执行</a></li>
+<li><a href="#demo">demo</a></li>
 </ul>
-<h3 id="kafka-服务端"><a href="#kafka-服务端" class="headerlink" title="kafka 服务端"></a>kafka 服务端</h3><p>&emsp; &emsp;  kafka是典型SEDA(多阶段事务驱动模型)这种架构正好符合Kafka设计要求，高吞吐量高性能要求，kafka客户端(producer和consuemr)与broker一般都是建立长连接。</p>
-<ul>
-<li>对于broker来说，客户端连接数量有限，不会频繁新建大量连接。因此一个Acceptor thread线程处理新建连接绰绰有余。</li>
-<li>Kafka高吐吞量，则要求broker接收和发送数据必须快速，因此用proccssor thread线程池处理，并把读取客户端数据转交给缓冲区，不会导致客户端请求大量堆积。</li>
-<li>Kafka磁盘操作比较频繁会且有io阻塞或等待，IO Thread线程数量一般设置为proccssor thread num两倍，可以根据运行环境需要进行调节。</li>
-</ul>
-<p>&emsp; &emsp;  Kafka 服务端主要又分为api层,日志子系统,副本子系统,网络层 四部分,下面进行分别介绍<br><img src="/picture/kafka_cluster_1.png" alt="kafka"></p>
-<h3 id="api层"><a href="#api层" class="headerlink" title="api层"></a>api层</h3><p><img src="/picture/kafka_cluster_1.png" alt="kafka"></p>
-<ul>
-<li>通过O(1)的磁盘数据结构提供消息的持久化，这种结构对于即使数以TB的消息存储也能够保持长时间的稳定性能。</li>
-<li>高吞吐量：即使是非常普通的硬件kafka也可以支持每秒数十万的消息。</li>
-<li>支持同步和异步复制两种HA</li>
-<li>Consumer客户端pull，随机读,利用sendfile系统调用，zero-copy ,批量拉数据</li>
-<li>消费状态保存在客户端</li>
-<li>消息存储顺序写</li>
-<li>数据迁移、扩容对用户透明</li>
-<li>支持Hadoop并行数据加载。</li>
-<li>支持online和offline的场景。</li>
-<li>持久化：通过将数据持久化到硬盘以及replication防止数据丢失。</li>
-<li>scale out：无需停机即可扩展机器。</li>
-<li>定期删除机制，支持设定partitions的segment file保留时间。</li>
-</ul>
-<h3 id="日志子系统"><a href="#日志子系统" class="headerlink" title="日志子系统"></a>日志子系统</h3><p><img src="/picture/kafkacluster.png" alt="kafka组成"></p>
-<h3 id="副本子系统"><a href="#副本子系统" class="headerlink" title="副本子系统"></a>副本子系统</h3><ul>
-<li>message : 由Key,value 组成,是kafka上最基本的数据单位</li>
-<li>broker     : Kafka集群中的机器/服务被称为broker， 是一个物理概念</li>
-<li>topic    : 维护Kafka上的消息类型被称为Topic,类似一个消息队列，是一个逻辑概念  </li>
-<li>partition : 具体维护Kafka上的消息数据的最小单位</li>
-<li>producer :负责将消息发送到Kafka对应Topic的进程</li>
-<li>consumer : 负责从对应Topic获取数据的进程</li>
-<li>consumer group : 每个consumer 都对应唯一一个consumer group,n:1关系</li>
-</ul>
-<h3 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h3><p>kafka集群搭建比较简单,参见<a href="http://kafka.apache.org/" title="kafka" target="_blank" rel="external">kafka</a>,不再赘述;<br>kafka 集群配置,参见<a href="http://kafka.apache.org/documentation/" title="kafka config" target="_blank" rel="external">kafka config</a>,也不再赘述了</p>
-
+<h3 id="producer"><a href="#producer" class="headerlink" title="producer"></a>producer</h3><p>kafka producer 有sync和async两种发送方式, 具体如下<br><img src="/picture/kafkaProducer.png" alt="kafka"></p>
+<h3 id="producer相关配置"><a href="#producer相关配置" class="headerlink" title="producer相关配置"></a>producer相关配置</h3><p>参见[producer config][2]</p>
+<h3 id="命令行执行"><a href="#命令行执行" class="headerlink" title="命令行执行"></a>命令行执行</h3><pre><code>bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
+</code></pre><h3 id="demo"><a href="#demo" class="headerlink" title="demo"></a>demo</h3>
             <div class="clearfix"></div>
             <hr class="nogutter">
         </div>
         <nav class="pagination" role="pagination">
     
+    <a class="pull-left" href="/kafka/kafka生产者/" style="float: left;">
+        ← kafka Producer
+    </a>
     
-    <a class="pull-right" href="/2017/07/18/kafka比较/">
-        kafka的使用场景 →
+    
+    <a class="pull-right" href="/kafka/kafka服务端/">
+        kafka server →
     </a>
     
 </nav>
@@ -247,7 +245,6 @@
                 <p>
                     &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By tt is not 90s. All Rights Reserved.
                 </p>
-                <p>Theme By <a href="//go.kieran.top" style="color: #767D84">Kieran</a></p>
             </div>
             <div class="social">
                 <ul>
@@ -257,16 +254,13 @@
                     
                     
                     
-                    <li><a href="https://google.com/" title="Google-Plus" target="_blank"><i class="icon-google-plus"></i></a>&nbsp;</li>
-                    
-                    
                 </ul>
             </div>
-            <div class="clearfix"> </div>
         </div>
 </footer>
 
 <!-- ============================ END Footer =========================== -->
+
       <!-- Load our scripts -->
 <!-- Resizable 'on-demand' full-height hero -->
 <script type="text/javascript">
@@ -329,7 +323,7 @@ $('#intro').find('img').each(function(){
         directionNav: true
       });
     });
-</script>
+</script> 
 
 </body>
 </html>

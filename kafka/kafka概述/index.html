@@ -17,7 +17,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>kafka的使用场景 | tt</title>
+  <title>kafka概述 | tt</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -81,9 +81,23 @@
                 <a class="sb-toggle-submenu">Works<span class="sb-caret"></span></a>
                 <ul class="sb-submenu">
                     
-                        <li><a href="/" target="_BLANK" class="animsition-link">AAA</a></li>
+                        <li><a href="/tags/kafka/" target="_BLANK" class="animsition-link">kafka</a></li>
                     
-                        <li><a href="/atom.xml" target="_BLANK" class="animsition-link">BBB</a></li>
+                        <li><a href="/tags/hbase/" target="_BLANK" class="animsition-link">hbase</a></li>
+                    
+                        <li><a href="/tags/spark/" target="_BLANK" class="animsition-link">spark</a></li>
+                    
+                        <li><a href="/tags/hadoop/" target="_BLANK" class="animsition-link">hadoop</a></li>
+                    
+                        <li><a href="/tags/算法导论/" target="_BLANK" class="animsition-link">算法导论</a></li>
+                    
+                        <li><a href="/tags/机器学习/" target="_BLANK" class="animsition-link">机器学习</a></li>
+                    
+                        <li><a href="/tags/深度学习/" target="_BLANK" class="animsition-link">深度学习</a></li>
+                    
+                        <li><a href="/tags/推荐系统/" target="_BLANK" class="animsition-link">推荐系统</a></li>
+                    
+                        <li><a href="/tags/搜索/" target="_BLANK" class="animsition-link">搜索</a></li>
                     
                 </ul>
             </li>
@@ -94,9 +108,9 @@
                 <a class="sb-toggle-submenu">Links<span class="sb-caret"></span></a>
                 <ul class="sb-submenu">
                     
-                    <li><a href="http://go.kieran.top/" class="animsition-link">null</a></li>
+                    <li><a href="http://kafka.apache.org/" class="animsition-link">kafka</a></li>
                     
-                    <li><a href="http://domain.com/" class="animsition-link">Name</a></li>
+                    <li><a href="http://hbase.apache.org/" class="animsition-link">hbase</a></li>
                     
                 </ul>
             </li>
@@ -168,71 +182,68 @@
         <div class="row col-md-offset-2">
             <div class="col-md-8">
     			<span class="post-meta">
-      <time datetime="2017-07-17T18:10:06.000Z" itemprop="datePublished">
-          2017-07-18
+      <time datetime="2017-07-20T13:19:28.000Z" itemprop="datePublished">
+          2017-07-20
       </time>
     
+    
+    | 
+    <a href='/tags/大数据/'>大数据</a>,
+    
+    <a href='/tags/分布式/'>分布式</a>,
+    
+    <a href='/tags/中间件/'>中间件</a>,
+    
+    <a href='/tags/kafka/'>kafka</a>
+    
+    
 </span>
-                <h1>kafka的使用场景</h1>
+                <h1>kafka概述</h1>
             </div>
         </div>
         <div class="col-md-8 col-md-offset-2">
       		<ul>
-<li><a href="#为什么要用消息系统">为什么要用消息系统</a></li>
-<li><a href="#消息系统比较">消息系统比较</a></li>
-<li><a href="#kafka的使用场景">kafka的使用场景</a></li>
+<li><a href="#kafka-简介">kafka 简介</a></li>
+<li><a href="#kafka-特性">kafka 特性</a></li>
+<li><a href="#kafak-核心概念">kafak 核心概念</a></li>
+<li><a href="#kafka-集群">kafka 集群</a></li>
 </ul>
-<h3 id="为什么要用消息系统"><a href="#为什么要用消息系统" class="headerlink" title="为什么要用消息系统"></a>为什么要用消息系统</h3><ul>
-<li><p>解耦<br>&emsp; &emsp;在项目启动之初来预测将来项目会碰到什么需求，是极其困难的。消息系统在处理过程中间插入了一个隐含的、基于数据的接口层，两边的处理过程都要实现这一接口。这允许你独立的扩展或修改两边的处理过程，只要确保它们遵守同样的接口约束。</p>
-</li>
-<li><p>冗余<br>&emsp; &emsp;有些情况下，处理数据的过程会失败。除非数据被持久化，否则将造成丢失。消息队列把数据进行持久化直到它们已经被完全处理，通过这一方式规避了数据丢失风险。许多消息队列所采用的”插入-获取-删除”范式中，在把一个消息从队列中删除之前，需要你的处理系统明确的指出该消息已经被处理完毕，从而确保你的数据被安全的保存直到你使用完毕。</p>
-</li>
-<li><p>扩展性<br>&emsp; &emsp;因为消息队列解耦了你的处理过程，所以增大消息入队和处理的频率是很容易的，只要另外增加处理过程即可。不需要改变代码、不需要调节参数。扩展就像调大电力按钮一样简单。</p>
-</li>
-<li><p>灵活性 &amp; 峰值处理能力<br>&emsp; &emsp;在访问量剧增的情况下，应用仍然需要继续发挥作用，但是这样的突发流量并不常见；如果为以能处理这类峰值访问为标准来投入资源随时待命无疑是巨大的浪费。使用消息队列能够使关键组件顶住突发的访问压力，而不会因为突发的超负荷的请求而完全崩溃。</p>
-</li>
-<li><p>可恢复性<br>&emsp; &emsp;系统的一部分组件失效时，不会影响到整个系统。消息队列降低了进程间的耦合度，所以即使一个处理消息的进程挂掉，加入队列中的消息仍然可以在系统恢复后被处理。</p>
-</li>
-<li><p>顺序保证<br>&emsp; &emsp;在大多使用场景下，数据处理的顺序都很重要。大部分消息队列本来就是排序的，并且能保证数据会按照特定的顺序来处理。Kafka保证一个Partition内的消息的有序性。</p>
-</li>
-<li><p>缓冲<br>&emsp; &emsp;在任何重要的系统中，都会有需要不同的处理时间的元素。例如，加载一张图片比应用过滤器花费更少的时间。消息队列通过一个缓冲层来帮助任务最高效率的执行———写入队列的处理会尽可能的快速。该缓冲有助于控制和优化数据流经过系统的速度。</p>
-</li>
-<li><p>异步通信<br>&emsp; &emsp;很多时候，用户不想也不需要立即处理消息。消息队列提供了异步处理机制，允许用户把一个消息放入队列，但并不立即处理它。想向队列中放入多少消息就放多少，然后在需要的时候再去处理它们。</p>
-</li>
+<h3 id="kafka-简介"><a href="#kafka-简介" class="headerlink" title="kafka 简介"></a>kafka 简介</h3><p>Kafka是最初由Linkedin公司开发，是一个分布式、分区的、多副本的、多订阅者，基于zookeeper协调的分布式日志系统(也可以当做MQ系统)，常见可以用于web/nginx日志、访问日志，消息服务等等，Linkedin于2010年贡献给了Apache基金会并成为顶级开源项目。</p>
+<h3 id="kafka-特性"><a href="#kafka-特性" class="headerlink" title="kafka 特性"></a>kafka 特性</h3><p><img src="/picture/kafka_cluster_1.png" alt="kafka"></p>
+<ul>
+<li>通过O(1)的磁盘数据结构提供消息的持久化，这种结构对于即使数以TB的消息存储也能够保持长时间的稳定性能。</li>
+<li>高吞吐量：即使是非常普通的硬件kafka也可以支持每秒数十万的消息。</li>
+<li>支持同步和异步复制两种HA</li>
+<li>Consumer客户端pull，随机读,利用sendfile系统调用，zero-copy ,批量拉数据</li>
+<li>消费状态保存在客户端</li>
+<li>消息存储顺序写</li>
+<li>数据迁移、扩容对用户透明</li>
+<li>支持Hadoop并行数据加载。</li>
+<li>支持online和offline的场景。</li>
+<li>持久化：通过将数据持久化到硬盘以及replication防止数据丢失。</li>
+<li>scale out：无需停机即可扩展机器。</li>
+<li>定期删除机制，支持设定partitions的segment file保留时间。</li>
 </ul>
-<h3 id="消息系统比较"><a href="#消息系统比较" class="headerlink" title="消息系统比较"></a>消息系统比较</h3><ul>
-<li><p>RabbitMQ<br>&emsp; &emsp;RabbitMQ是使用Erlang编写的一个开源的消息队列，本身支持很多的协议：AMQP，XMPP, SMTP, STOMP，也正因如此，它非常重量级，更适合于企业级的开发。同时实现了Broker构架，这意味着消息在发送给客户端时先在中心队列排队。对路由，负载均衡或者数据持久化都有很好的支持。</p>
-</li>
-<li><p>Redis<br>&emsp; &emsp;Redis是一个基于Key-Value对的NoSQL数据库，开发维护很活跃。虽然它是一个Key-Value数据库存储系统，但它本身支持MQ功能，所以完全可以当做一个轻量级的队列服务来使用。对于RabbitMQ和Redis的入队和出队操作，各执行100万次，每10万次记录一次执行时间。测试数据分为128Bytes、512Bytes、1K和10K四个不同大小的数据。实验表明：入队时，当数据比较小时Redis的性能要高于RabbitMQ，而如果数据大小超过了10K，Redis则慢的无法忍受；出队时，无论数据大小，Redis都表现出非常好的性能，而RabbitMQ的出队性能则远低于Redis。</p>
-</li>
-<li><p>ZeroMQ<br>&emsp; &emsp;ZeroMQ号称最快的消息队列系统，尤其针对大吞吐量的需求场景。ZMQ能够实现RabbitMQ不擅长的高级/复杂的队列，但是开发人员需要自己组合多种技术框架，技术上的复杂度是对这MQ能够应用成功的挑战。ZeroMQ具有一个独特的非中间件的模式，你不需要安装和运行一个消息服务器或中间件，因为你的应用程序将扮演这个服务器角色。你只需要简单的引用ZeroMQ程序库，可以使用NuGet安装，然后你就可以愉快的在应用程序之间发送消息了。但是ZeroMQ仅提供非持久性的队列，也就是说如果宕机，数据将会丢失。其中，Twitter的Storm 0.9.0以前的版本中默认使用ZeroMQ作为数据流的传输（Storm从0.9版本开始同时支持ZeroMQ和Netty作为传输模块）。</p>
-</li>
-<li><p>ActiveMQ<br>&emsp; &emsp;ActiveMQ是Apache下的一个子项目。 类似于ZeroMQ，它能够以代理人和点对点的技术实现队列。同时类似于RabbitMQ，它少量代码就可以高效地实现高级应用场景。</p>
-</li>
-<li><p>Kafka<br>&emsp; &emsp;Kafka是Apache下的一个子项目，是一个高性能跨语言分布式发布/订阅消息队列系统，而Jafka是在Kafka之上孵化而来的，即Kafka的一个升级版。具有以下特性：快速持久化，可以在O(1)的系统开销下进行消息持久化；高吞吐，在一台普通的服务器上既可以达到10W/s的吞吐速率；完全的分布式系统，Broker、Producer、Consumer都原生自动支持分布式，自动实现负载均衡；支持Hadoop数据并行加载，对于像Hadoop的一样的日志数据和离线分析系统，但又要求实时处理的限制，这是一个可行的解决方案。Kafka通过Hadoop的并行加载机制统一了在线和离线的消息处理。Apache Kafka相对于ActiveMQ是一个非常轻量级的消息系统，除了性能非常好之外，还是一个工作良好的分布式系统。</p>
-</li>
+<h3 id="kafka-组成"><a href="#kafka-组成" class="headerlink" title="kafka 组成"></a>kafka 组成</h3><p><img src="/picture/kafkacluster.png" alt="kafka组成"></p>
+<h3 id="kafak-核心概念"><a href="#kafak-核心概念" class="headerlink" title="kafak 核心概念"></a>kafak 核心概念</h3><ul>
+<li>message : 由Key,value 组成,是kafka上最基本的数据单位</li>
+<li>broker     : Kafka集群中的机器/服务被称为broker， 是一个物理概念</li>
+<li>topic    : 维护Kafka上的消息类型被称为Topic,类似一个消息队列，是一个逻辑概念  </li>
+<li>partition : 具体维护Kafka上的消息数据的最小单位<br><img src="/picture/topic_partition.png" alt="topic_partition"> </li>
+<li>producer :负责将消息发送到Kafka对应Topic的进程</li>
+<li>consumer : 负责从对应Topic获取数据的进程<br><img src="/picture/partiton_consumer.png" alt="partiton_consumer"> </li>
+<li>consumer group : 每个consumer 都对应唯一一个consumer group,n:1关系</li>
 </ul>
-<h3 id="kafka的使用场景"><a href="#kafka的使用场景" class="headerlink" title="kafka的使用场景"></a>kafka的使用场景</h3><ul>
-<li><p>Messaging<br>&emsp; &emsp;对于一些常规的消息系统,kafka是个不错的选择;partitons/replication和容错,可以使kafka具有良好的扩展性和性能优势.不过到目前为止,我们应该很清楚认识到,kafka并没有提供JMS中的”事务性””消息传输担保(消息确认机制)””消息分组”等企业级特性;kafka只能使用作为”常规”的消息系统,在一定程度上,尚未确保消息的发送与接收绝对可靠(比如,消息重发,消息发送丢失等)</p>
-</li>
-<li><p>流处理<br>&emsp; &emsp; kafka消息处理包含多个阶段。其中原始输入数据是从kafka主题消费的，然后汇总，丰富，或者以其他的方式处理转化为新主题，例如，一个推荐新闻文章，文章内容可能从“articles”主题获取；然后进一步处理内容，得到一个处理后的新内容，最后推荐给用户。这种处理是基于单个主题的实时数据流。从0.10.0.0开始，轻量，但功能强大的流处理，就进行这样的数据处理了</p>
-</li>
-<li><p>Log Aggregation<br>&emsp; &emsp;kafka的特性决定它非常适合作为”日志收集中心”;application可以将操作日志”批量””异步”的发送到kafka集群中,而不是保存在本地或者DB中;kafka可以批量提交消息/压缩消息等,这对producer端而言,几乎感觉不到性能的开支.此时consumer端可以使hadoop等其他系统化的存储和分析系统.</p>
-</li>
-</ul>
+<h3 id="kafka-机群搭建"><a href="#kafka-机群搭建" class="headerlink" title="kafka 机群搭建"></a>kafka 机群搭建</h3><p>kafka集群搭建比较简单,参见<a href="http://kafka.apache.org/" title="kafka" target="_blank" rel="external">kafka</a>,不再赘述;<br>kafka 集群配置,参见<a href="http://kafka.apache.org/documentation/" title="kafka config" target="_blank" rel="external">kafka config</a>,也不再赘述了</p>
 
             <div class="clearfix"></div>
             <hr class="nogutter">
         </div>
         <nav class="pagination" role="pagination">
     
-    <a class="pull-left" href="/2017/07/18/kafka服务端/" style="float: left;">
-        ← kafka server
-    </a>
     
-    
-    <a class="pull-right" href="/2017/07/18/kafka消费者/">
-        kafka Consumer →
+    <a class="pull-right" href="/kafka/kafka设计理念/">
+        kafka 设计理念 →
     </a>
     
 </nav>
@@ -254,7 +265,6 @@
                 <p>
                     &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By tt is not 90s. All Rights Reserved.
                 </p>
-                <p>Theme By <a href="//go.kieran.top" style="color: #767D84">Kieran</a></p>
             </div>
             <div class="social">
                 <ul>
@@ -264,16 +274,13 @@
                     
                     
                     
-                    <li><a href="https://google.com/" title="Google-Plus" target="_blank"><i class="icon-google-plus"></i></a>&nbsp;</li>
-                    
-                    
                 </ul>
             </div>
-            <div class="clearfix"> </div>
         </div>
 </footer>
 
 <!-- ============================ END Footer =========================== -->
+
       <!-- Load our scripts -->
 <!-- Resizable 'on-demand' full-height hero -->
 <script type="text/javascript">
@@ -336,7 +343,7 @@ $('#intro').find('img').each(function(){
         directionNav: true
       });
     });
-</script>
+</script> 
 
 </body>
 </html>
